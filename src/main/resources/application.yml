@@ -1,0 +1,52 @@
+server-address: 192.168.10.33
+
+server:
+  port: 8080
+  tomcat:
+     # tomcat的URI编码
+     uri-encoding: UTF-8
+     # tomcat最大线程数 默认为200
+     max-threads: 200
+     # Tomcat启动初始化的线程数 默认值25
+     min-spare-threads: 30
+spring:
+  application:
+      name: app
+  thymeleaf:
+    # 开发时关闭缓存
+    cache: false
+    # 可以不配置 检查模板位置
+    check-template-location: true
+    encoding: UTF-8
+    # 解析非严格的html5 标签不闭合也可使用
+    mode: LEGACYHTML5
+    # 配置模板路径的 默认就是templates 可不用配置
+    prefix: classpath:/templates/
+    servlet:
+      content-type: text/html
+    suffix: .html
+  datasource:
+    url: jdbc:mysql://${server-address}/app?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&useAffectedRows=true&autoReconnect=true&&zeroDateTimeBehavior=convertToNull&useSSL=true&allowMulQueries=true&&nullCatalogMeansCurrent=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      connection-timeout: 30000
+      auto-commit: true
+      max-lifetime: 1800000
+      pool-name: DatebookHikariCP
+      connection-test-query: SELECT 1
+      idle-timeout: 30000
+      minimum-idle: 5
+      maximum-pool-size: 15
+mybatis:
+  #扫描实体类生成别名 或在实体类上使用注解@Alias标注
+  type-aliases-package: com.example.model
+  #扫描mapper.xml
+  mapper-locations: classpath*:com/example/mapper/*mapper.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+flowable:
+  # 关闭定时器
+  async-executor-activate: false
